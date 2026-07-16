@@ -8,70 +8,51 @@
 
 # Purpose
 
-This document defines the official User Interface (UI) and User Experience (UX) standards for the DeTLeng Platform.
+Define the official UI and UX standards for the DeTLeng Platform.
 
-Every page, component, module, and future implementation must follow these standards.
-
-Consistency is more important than creativity.
-
-The entire platform should feel like one professional application rather than multiple unrelated web pages.
+The platform must appear as a single professional engineering application.
 
 ---
 
-# Design Philosophy
+# Platform Pages
 
-The DeTLeng Platform is an engineering platform.
+The platform contains only two pages.
 
-Its interface should communicate:
+```text
+index.html
+dashboard.html
+```
 
-- Professionalism
-- Simplicity
-- Reliability
-- Clarity
-- Modern Engineering
-- Maintainability
-
-Avoid unnecessary animations, visual clutter, excessive colors, or decorative elements.
-
-The interface should remain clean and functional.
+No additional HTML pages should be created unless explicitly requested.
 
 ---
 
 # Branding
 
-The platform uses official DeTLeng branding.
-
-Use ONLY the provided assets.
+Use only the official DeTLeng branding.
 
 Logo
 
-logop.png
+`logop.png`
 
 Favicon
 
-faviconp.png
+`faviconp.png`
 
-These assets must remain consistent across every page.
-
-Never replace or redesign them.
+Branding must remain identical across the platform.
 
 ---
 
 # Global Layout
 
-Every page should follow exactly the same layout.
+Every page must follow this layout.
 
-Standard page structure:
-
+```text
 Fixed Navigation
 
 ↓
 
 Page Content
-
-↓
-
-Module Content
 
 ↓
 
@@ -84,150 +65,164 @@ Support Button
 ↓
 
 Shared JavaScript
-
-Users should never feel that they have left the platform.
-
----
-
-# Navigation Standards
-
-Navigation is mandatory on every page.
-
-The navigation bar must:
-
-- remain fixed at the top
-- remain identical on every page
-- display the DeTLeng logo
-- support desktop and mobile layouts
-- use consistent spacing
-- use consistent typography
-
-Never redesign the navigation for individual pages.
+```
 
 ---
 
-# Navigation Menu
+# Navigation
 
-Initial platform modules:
+Navigation must remain identical on every page.
+
+Menu:
 
 - Home
-- Airflow
-- BigQuery
+- Dashboard
+
+The active page must always be highlighted.
+
+Navigation requirements:
+
+- Fixed Top
+- Responsive
+- Mobile Menu
+- Hover Effect
+- Active Menu Highlight
+
+---
+
+# Dashboard
+
+The Dashboard is the platform control center.
+
+It contains only operational modules.
+
+Modules:
+
+- Apache Airflow
+- PostgreSQL
 - dbt
-- Pipelines
-- Datasets
-- Jobs
-- Logs
+- Dashboard Engine
 - AI Assistant
-- Monitoring
-- Settings
-- Documentation
 
-Future modules may be added without changing the existing navigation design.
+Each module is displayed as a professional dashboard card.
 
 ---
 
-# Active Navigation
+# Dashboard Cards
 
-The currently opened page must always be visually highlighted.
+## Apache Airflow
 
-Example:
+Purpose
 
-Hover
+Launch Apache Airflow.
 
-Blue
+Target
 
-Active
+`/airflow`
 
-Dark Blue
-
-Bold Text
-
-Yes
-
-Underline
-
-Optional
-
-This provides immediate orientation to the user.
+Future implementation will use a reverse proxy.
 
 ---
 
-# Hover Effects
+## PostgreSQL
 
-Every interactive element should provide visual feedback.
+Purpose
 
-Examples include:
+Launch PostgreSQL administration interface.
 
-Navigation links
+Target
 
-Buttons
+`/postgresql`
+
+Future implementation may use pgAdmin or an equivalent interface.
+
+---
+
+## dbt
+
+Purpose
+
+Launch the dbt documentation or analytics workspace.
+
+Target
+
+`/dbt`
+
+---
+
+## Dashboard Engine
+
+Purpose
+
+Generate an automated Excel dashboard from the Analytics Layer.
+
+Output:
+
+- Excel Dashboard
+- KPI Summary
+- Executive Report
+- Data Quality Report
+
+Button:
+
+**Generate Dashboard**
+
+---
+
+## AI Assistant
+
+Purpose
+
+Open the existing AI Assistant.
+
+Target:
+
+https://casestudy.detleng.com/
+
+This module will be customized in future phases.
+
+---
+
+# UI Standards
+
+Font
+
+- Segoe UI
+- Arial
+- sans-serif
+
+Responsive
+
+- Desktop
+- Tablet
+- Mobile
 
 Cards
 
-Icons
+- Rounded Corners
+- Soft Shadow
+- Consistent Padding
+- Consistent Spacing
 
-Clickable modules
+Buttons
 
-Hover transitions should remain subtle.
+- Blue Primary
+- Hover Effect
+- Active State
+- Border Radius: 12px
+- Transition: 0.2s
 
-Recommended transition:
-
-0.2s
-
-Avoid flashy animations.
-
----
-
-# Responsive Design
-
-Responsive design is mandatory.
-
-Desktop
-
-Required
-
-Tablet
-
-Required
-
-Mobile
-
-Required
-
-Pages must remain usable on all common screen sizes.
-
-Never create desktop-only layouts.
-
----
-
-# Typography
-
-Use clean system fonts.
-
-Preferred:
-
-Segoe UI
-
-Fallback:
-
-Arial
-
-sans-serif
-
-Typography should prioritize readability.
-
-Avoid decorative fonts.
+Animations should remain minimal.
 
 ---
 
 # Color Palette
 
-Primary Blue
+Primary
 
 DeTLeng Blue
 
-Primary Accent
+Accent
 
 Golden Yellow
 
@@ -243,381 +238,101 @@ Text
 
 Dark Gray
 
-Links
-
-Blue
-
-Success
-
-Green
-
-Warning
-
-Orange
-
-Danger
-
-Red
-
-Maintain color consistency across all modules.
-
----
-
-# Spacing
-
-Pages should use generous whitespace.
-
-Avoid crowded layouts.
-
-Recommended spacing:
-
-Section spacing
-
-40px–60px
-
-Card padding
-
-20px–30px
-
-Content width
-
-Approximately 900–1200px
-
-Spacing should remain consistent throughout the platform.
-
----
-
-# Cards
-
-Cards should use:
-
-Soft border
-
-Rounded corners
-
-Subtle shadow
-
-Consistent padding
-
-Consistent spacing
-
-Cards should never appear visually heavy.
-
----
-
-# Buttons
-
-Buttons should remain consistent across the platform.
-
-Rounded Corners
-
-12px
-
-Transition
-
-0.2s
-
-Hover
-
-Required
-
-Soft Shadow
-
-Required
-
-Primary Button
-
-Blue
-
-Secondary Button
-
-Gray
-
-Danger Button
-
-Red
-
-Support Button
-
-DeTLeng Blue
-
-Buttons should communicate hierarchy through color.
-
 ---
 
 # Footer
 
-Every page must contain the same footer.
+Every page must display the official DeTLeng Ecosystem.
 
-Footer contents:
+| Platform | URL |
+|----------|-----|
+| DeTLeng | https://www.detleng.com |
+| Insights | https://insights.detleng.com |
+| Case Studies | https://casestudy.detleng.com |
+| Inteligencia | https://inteligencia.detleng.com |
+| Agents | https://agents.detleng.com |
 
-DeTLeng Ecosystem
+All external links must open in a new tab.
 
-Platform Links
-
-Copyright
-
-Support Information
-
-Future links may be added without redesigning the footer.
-
----
-
-# Ecosystem Section
-
-Every page must display the official **DeTLeng Ecosystem** section.
-
-Include links to:
-
-DeTLeng
-
-Insights
-
-Case Studies
-
-Inteligencia
-
-Agents
-
-
-
-
-
-This section should remain identical across the entire platform and provide quick navigation to other DeTLeng properties.
-
-The following websites must always be included.
-
-| Platform | URL | Purpose |
-|----------|-----|---------|
-| **DeTLeng** | https://www.detleng.com | Data Engineering • ETL • Analytics • Business Intelligence |
-| **Insights** | https://insights.detleng.com | Research • Articles • Knowledge Hub |
-| **Case Studies** | https://casestudy.detleng.com | Projects • Implementations • Success Stories |
-| **Inteligencia DeTLeng** | https://inteligencia.detleng.com | Knowledge • Insights • Applied Intelligence |
-| **Agents DeTLeng** | https://agents.detleng.com | AI Agents • Automation • Intelligent Workflows |
-
-## UI Requirements
-
-The Ecosystem section should:
-
-- appear near the bottom of every page
-- use the same layout on every page
-- use the same spacing and styling
-- remain fully responsive
-- open all external links in a new browser tab (`target="_blank"`)
-- preserve consistent branding across the platform
-
-The Ecosystem section is considered a shared platform component and must remain visually identical throughout the DeTLeng Platform.
+The footer must remain identical across the platform.
 
 ---
 
 # Support Button
 
-Every page must contain the Support button.
+Every page must include a floating Support button.
 
-The Support button should:
+Action:
 
-Open the user's default email application.
-
-Automatically prepare a consultation email template.
+Open the user's default email client using a `mailto:` link.
 
 The email template should include:
 
-Name
+- Name
+- Project Type
+- Project Description
+- Data Source
+- Expected Outcome
+- Deadline
+- Additional Requirements
 
-Project Type
+No backend processing.
 
-Project Description
-
-Data Source
-
-Expected Outcome
-
-Deadline
-
-Additional Requirements
-
-The user only fills in the information and presses Send.
-
-Do not require custom forms or backend processing.
-
-The implementation should use a standard mailto link.
+No contact forms.
 
 ---
 
-# Shared Components
+# Shared Resources
 
-The following elements should be implemented as reusable components whenever practical.
+Use shared resources whenever possible.
 
-Navigation
+```text
+css/style.css
 
-Footer
+js/app.js
 
-Support Button
+images/
 
-Ecosystem Section
+Shared Navigation
 
-Common Styles
+Shared Footer
 
-Common JavaScript
+Shared Support Button
+```
 
-Avoid unnecessary duplication.
-
-If reusable components are not technically possible in Phase 1 using pure HTML, maintain identical code across all pages and prepare for future component extraction.
-
----
-
-# Page Consistency
-
-Every page must contain:
-
-Logo
-
-Favicon
-
-Navigation
-
-Page Title
-
-Module Content
-
-Footer
-
-Support Button
-
-Developer Comments
-
-Version Information
-
-No page should appear visually different from the rest of the platform.
+Avoid code duplication.
 
 ---
 
-# Placeholder Pages
+# Design Principles
 
-Modules not yet implemented should remain professional.
-
-Display:
-
-Module Name
-
-Description
-
-Implementation Status
-
-Coming Soon
-
-Future Roadmap
-
-Never leave blank pages.
+- Build a platform, not a website.
+- Keep the interface clean.
+- Keep navigation minimal.
+- Prioritize usability over decoration.
+- Maintain consistent branding.
+- Maintain consistent spacing.
+- Keep HTML, CSS, and JavaScript modular.
 
 ---
 
-# Accessibility
+# Codex Instructions
 
-Use semantic HTML whenever practical.
-
-Buttons must remain clickable.
-
-Links should remain distinguishable.
-
-Contrast should remain readable.
-
-Avoid relying only on color to communicate meaning.
-
----
-
-# Performance
-
-Avoid unnecessary JavaScript.
-
-Avoid large image assets.
-
-Keep HTML clean.
-
-Reuse CSS whenever possible.
-
-Load only what is required.
-
----
-
-# Widget Strategy
-
-Phase 1 should prioritize simplicity.
-
-Preferred approach:
-
-Shared CSS
-
-Shared JavaScript
-
-Common reusable HTML structure
-
-Do not introduce frontend frameworks.
-
-If future requirements justify it, reusable widgets or components may be introduced without changing the visual design.
-
----
-
-# UI Evolution
-
-Future enhancements may include:
-
-Dark Mode
-
-Theme Switching
-
-Component Library
-
-Animations
-
-Accessibility Improvements
-
-Localization
-
-These enhancements should preserve the existing design language.
-
----
-
-# Codex Development Instructions
-
-Codex must follow these UI standards exactly.
-
-Do not redesign pages individually.
-
-Do not introduce different fonts, colors, spacing, or layouts.
-
-Every page must appear to belong to the same platform.
-
-When uncertain, prefer consistency over creativity.
+- Follow these UI standards exactly.
+- Do not redesign the interface.
+- Do not create additional informational pages.
+- Do not recreate third-party applications.
+- Dashboard cards must launch the appropriate module or future integration.
+- Preserve branding and visual consistency.
 
 ---
 
 # Document Information
 
-Document
+Document: 02_UI_UX_STANDARDS.md
 
-02_UI_UX_STANDARDS.md
+Version: 2.0
 
-Project
+Status: Approved
 
-DeTLeng Platform
-
-Version
-
-1.0
-
-Status
-
-Approved
-
-Phase
-
-Phase 1
-
-Last Updated
-
-2026-07-16
-
-Author
-
-DeTLeng Platform Engineering
+Phase: 1
