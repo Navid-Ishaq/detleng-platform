@@ -200,3 +200,151 @@ docs/
 └── 07_IMPLEMENTATION_NOTES.md
 
 Ye 7 files mil kar DeTLeng Platform ki Software Design Specification (SDS) ban jayengi. Iske baad Codex sirf HTML generate nahi karega, balki isi architecture aur standards ko follow karte hue platform develop karega. Phir jab hum Airflow, BigQuery, dbt, AI Assistant ya kisi naye module par kaam shuru karenge, to us module ki apni specification file add kar denge aur poora project ek hi engineering standard par grow karega.
+
+
+
+
+07_IMPLEMENTATION_NOTES.md ka final purpose
+
+Ye file:
+
+Developer notebook hai.
+Future implementation ideas rakhegi.
+TODO standards define karegi.
+Reverse proxy planning rakhegi.
+Module integration reminders rakhegi.
+Future documentation list rakhegi.
+Developer comment standards define karegi.
+Versioning convention define karegi.
+
+Ye user documentation nahi hai.
+
+Locked Future Integrations
+
+Phase 2 ya baad mein:
+
+Apache Airflow Reverse Proxy
+BigQuery Dataset Browser
+dbt Integration
+AI Assistant
+Monitoring
+Settings
+Authentication
+User Management
+
+Abhi implementation nahi.
+
+Sirf planning.
+
+Locked HTML Standards
+
+Har page mein:
+
+Developer Comment Block
+TODO Block
+Version Information
+Phase Information
+
+Mandatory.
+
+Locked UI Standards
+
+Har page:
+
+Same logo
+Same favicon
+Same navigation
+Active menu highlighting
+Hover effect
+Responsive layout
+Same footer
+Same ecosystem section
+Same Support button
+
+No exceptions.
+
+Locked Footer
+
+Har page ke end par:
+
+DeTLeng Ecosystem
+5 platform buttons
+Support button
+Email template
+Copyright
+
+Ye common component rahega.
+
+Locked Navigation
+
+Abhi ke liye menu structure freeze:
+
+Home
+Platform
+Airflow
+BigQuery
+dbt
+Pipelines
+Datasets
+AI Assistant
+Documentation
+Settings
+About
+Support
+
+Har page initially banega.
+
+Jo ready nahi hoga us par professional message hoga:
+
+Coming Soon
+
+This module is part of the DeTLeng Platform roadmap.
+
+Implementation is currently in progress.
+
+Please check future releases.
+
+Isse navigation complete rahegi aur baad mein structure badalne ki zarurat nahi padegi.
+
+Locked Development Strategy
+
+Phase 1:
+
+Complete platform structure
+Complete navigation
+Complete UI
+Placeholder pages
+Shared components
+GitHub deployment
+
+Phase 2:
+
+Airflow
+BigQuery
+Reverse Proxy
+API Integration
+
+Phase 3:
+
+dbt
+Monitoring
+AI Assistant
+
+Phase 4:
+
+Authentication
+Multi-user
+Client Portal
+Codex Rule
+
+Codex ko architecture invent nahi karna.
+
+Codex ko sirf SDS follow karni hai.
+
+Agar kisi cheez ki specification docs mein nahi hai, to Codex implementation rok kar placeholder ya TODO use karega—khud se naya pattern introduce nahi karega.
+
+✅ Status
+
+Is point par main is phase ko officially LOCKED maanta hoon.
+
+Ab agla kaam documentation likhna nahi, implementation hai. Agli conversation mein hum 01_PROJECT_OVERVIEW.md se shuru karenge aur ek-ek document ko production-quality banayenge, phir Codex ko ye repository dekar poora Phase 1 generate karwayenge.
