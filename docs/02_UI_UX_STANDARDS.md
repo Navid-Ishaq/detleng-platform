@@ -4,11 +4,11 @@ Ye Codex ko batayegi
 
 Logo
 
-logodl3.png
+logop.png
 
 Favicon
 
-favicon2.png
+faviconp.png
 
 Navigation
 
