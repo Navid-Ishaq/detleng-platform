@@ -1,3 +1,16 @@
+01_PROJECT_OVERVIEW.md
+
+Ye Codex ko batayegi
+
+Platform kya hai?
+
+Mission kya hai?
+
+Target kya hai?
+
+Example
+
+
 Project Name
 
 DeTLeng Platform
