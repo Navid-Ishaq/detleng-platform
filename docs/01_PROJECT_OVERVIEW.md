@@ -186,26 +186,62 @@ Users should immediately recognize they are inside the DeTLeng Platform.
 
 ---
 
-# Platform Navigation
+# Platform Structure
 
-Navigation represents platform modules rather than informational pages.
+The DeTLeng Platform is organized as a collection of functional platform modules.
 
-Menu items may include:
+Each module is represented by its own page.
+
+Initial project structure:
+
+```text
+platform-detleng/
+
+│
+├── index.html
+├── airflow.html
+├── bigquery.html
+├── dbt.html
+├── pipelines.html
+├── datasets.html
+├── jobs.html
+├── logs.html
+├── assistant.html
+├── monitoring.html
+├── settings.html
+├── documentation.html
+│
+├── css/
+│   └── style.css
+│
+├── js/
+│   └── app.js
+│
+├── images/
+│
+└── docs/
+```
+
+Each page represents a functional module of the platform rather than a traditional informational website page.
+
+The initial platform modules are:
 
 - Home
-- Platform
 - Airflow
 - BigQuery
 - dbt
 - Pipelines
 - Datasets
+- Jobs
+- Logs
 - AI Assistant
-- Documentation
+- Monitoring
 - Settings
-- About
-- Support
+- Documentation
 
-Navigation may expand in future releases without changing the overall design philosophy.
+Additional modules may be introduced in future releases without changing the overall platform architecture.
+
+All modules must follow the common UI, navigation, branding, and development standards defined throughout this Software Design Specification (SDS).
 
 ---
 
