@@ -2,214 +2,102 @@
 
 # DeTLeng Platform
 
-## Project Overview
-
----
-
 ## Purpose
 
-The DeTLeng Platform is a modern Data Engineering Platform developed as part of the DeTLeng Ecosystem.
+The DeTLeng Platform is a modern Data Engineering Platform within the DeTLeng Ecosystem.
 
-Unlike a traditional informational website, this project is an interactive platform that brings together multiple data engineering technologies under a single interface.
+It is a working engineering platform, not an informational website.
 
-The primary goal is to provide a centralized environment for building, managing, monitoring, and demonstrating modern data engineering workflows.
-
-This platform is initially designed for internal use, experimentation, demonstrations, research, learning, and innovation. Future versions may support external users, authentication, and client-specific workspaces.
+The platform provides a single interface for launching, integrating, and demonstrating data engineering workflows.
 
 ---
 
 # Project Vision
 
-The DeTLeng Platform aims to become a unified workspace where modern data engineering tools work together seamlessly.
+Provide a unified platform where users can transform raw datasets into analytics-ready data and generate business outputs through a simple workflow.
 
-Instead of visiting multiple applications separately, users should be able to access everything from one platform.
+The platform focuses on:
 
-Examples include:
-
-- Apache Airflow
-- Google BigQuery
-- dbt
-- SQL Workspace
-- Dataset Browser
-- Documentation
-- AI Assistant
-- Monitoring
-- Future Data Engineering Modules
-
-The platform should provide one consistent experience regardless of which module is currently being used.
+- Data Engineering
+- Analytics Engineering
+- Dashboard Automation
+- AI-Powered Business Insights
 
 ---
 
-# Project Philosophy
+# Phase 1 Workflow
 
-This project is NOT intended to be a traditional marketing website.
+```text
+Dataset
+(CSV / Excel)
 
-It is a working engineering platform.
+        │
+        ▼
 
-Every page should either:
+Apache Airflow
 
-- perform a platform function,
-- launch an engineering tool,
-- display useful engineering information,
-- or prepare for future functionality.
+        │
+        ▼
 
-Static informational pages should be kept to an absolute minimum.
+Data Profiling
 
----
+        │
+        ▼
 
-# Project Objectives
+Data Cleaning
 
-The platform should:
+        │
+        ▼
 
-- provide a professional engineering interface
-- demonstrate real-world data engineering workflows
-- integrate multiple engineering technologies
-- simplify engineering demonstrations
-- provide reusable engineering components
-- support future cloud deployment
-- support future authentication
-- support future multi-user environments
-- support future AI integration
+Data Validation
 
----
+        │
+        ▼
 
-# Phase 1 Scope
+Database
 
-Phase 1 focuses on building the platform foundation.
+• PostgreSQL
+or
+• Google BigQuery
 
-Deliverables include:
+        │
+        ▼
 
-- Complete platform navigation
-- Shared UI components
-- Responsive interface
-- Standardized page layout
-- Placeholder modules
-- Professional branding
-- Shared footer
-- Support system
-- Documentation framework
+dbt
 
-Actual integrations may be replaced with placeholders where implementation is planned for later phases.
+        │
+        ▼
 
----
+Analytics Layer
 
-# Future Phases
+        │
+        ▼
 
-Future development may include:
+DeTLeng Dashboard Engine
 
-- Apache Airflow Integration
-- Reverse Proxy Configuration
-- BigQuery Browser
-- dbt Integration
-- AI Assistant
-- Monitoring Dashboard
-- User Authentication
-- Client Workspaces
-- Administration Panel
-- API Services
-- Logging
-- Notifications
-- Usage Analytics
+        │
+        ▼
 
-These items are outside the scope of Phase 1.
+Excel Dashboard
 
----
+        │
+        ▼
 
-# Technology Stack
-
-The initial implementation should prioritize simplicity.
-
-Current stack:
-
-- HTML5
-- CSS3
-- Vanilla JavaScript
-
-No frontend frameworks should be introduced unless explicitly requested.
-
-Future backend technologies may include:
-
-- Python
-- FastAPI
-- Apache Airflow
-- Docker
-- Nginx
-- Google BigQuery
-- dbt
-- Cloud Services
-
-These technologies should only be integrated when implementation begins.
-
----
-
-# Repository Structure
-
-The repository should remain clean, modular, and maintainable.
-
-Typical structure:
-
-/
-assets/
-css/
-js/
-images/
-pages/
-components/
-docs/
-
-Future folders may be added as implementation progresses.
-
----
-
-# Branding
-
-The platform is part of the DeTLeng Ecosystem.
-
-Brand identity must remain consistent across all pages.
-
-Use the provided:
-
-- logo
-- favicon
-
-Do not replace branding assets.
-
----
-
-# UI Philosophy
-
-Every page must look like part of the same application.
-
-Consistency is more important than visual complexity.
-
-Users should immediately recognize they are inside the DeTLeng Platform.
+AI Assistant
+```
 
 ---
 
 # Platform Structure
 
-The DeTLeng Platform is organized as a collection of functional platform modules.
-
-Each module is represented by its own page.
-
-Initial project structure:
+The platform contains only two user-facing pages.
 
 ```text
 platform-detleng/
 
 │
 ├── index.html
-├── airflow.html
-├── bigquery.html
-├── dbt.html
-├── pipelines.html
-├── datasets.html
-├── jobs.html
-├── logs.html
-├── assistant.html
-├── monitoring.html
-├── settings.html
-├── documentation.html
+├── dashboard.html
 │
 ├── css/
 │   └── style.css
@@ -222,158 +110,108 @@ platform-detleng/
 └── docs/
 ```
 
-Each page represents a functional module of the platform rather than a traditional informational website page.
+No additional HTML pages should be created unless explicitly requested.
 
-The initial platform modules are:
+---
 
-- Home
-- Airflow
-- BigQuery
+# Dashboard Modules
+
+The Dashboard is the operational control center.
+
+Phase 1 modules:
+
+- Apache Airflow
+- PostgreSQL
 - dbt
-- Pipelines
-- Datasets
-- Jobs
-- Logs
+- Dashboard Engine
 - AI Assistant
-- Monitoring
-- Settings
-- Documentation
 
-Additional modules may be introduced in future releases without changing the overall platform architecture.
+Each module is represented by a dashboard card.
 
-All modules must follow the common UI, navigation, branding, and development standards defined throughout this Software Design Specification (SDS).
+Cards launch the real application, service, or future integration.
 
----
-
-# Placeholder Policy
-
-Modules not yet implemented should never appear broken.
-
-Instead they should display a professional placeholder such as:
-
-"Coming Soon"
-
-or
-
-"This module is currently under development."
-
-This ensures the platform always appears complete while allowing phased implementation.
+Do not recreate third-party applications in HTML.
 
 ---
 
-# Reusability
+# Dashboard Engine
 
-Common components should be reusable whenever practical.
+The Dashboard Engine generates business outputs from the Analytics Layer.
 
-Examples include:
+Outputs include:
 
-- Navigation
-- Footer
-- Ecosystem section
-- Support button
-- Common styling
-- Shared JavaScript
+- Excel Dashboard
+- KPI Summary
+- Executive Report
+- Data Quality Report
 
-Avoid unnecessary code duplication.
+Future outputs may include:
 
----
-
-# Documentation First
-
-Documentation is considered part of the software.
-
-Implementation should always follow documentation.
-
-If implementation conflicts with documentation, the documentation takes priority until officially updated.
+- Power BI
+- Looker Studio
+- PDF Reports
 
 ---
 
-# Development Philosophy
+# Technology Stack
 
-The project emphasizes:
-
-- readability
-- maintainability
-- modularity
-- consistency
-- scalability
-- simplicity
-
-Avoid unnecessary complexity.
-
----
-
-# Out of Scope
-
-The following items are intentionally excluded from Phase 1:
-
-- Authentication
-- Authorization
-- User Management
-- Billing
-- Subscription System
-- Database Administration
-- Multi-Tenant Support
-- Client Isolation
-- Production Reverse Proxy
-- Cloud Infrastructure
-
-These will be addressed in future phases.
+- HTML5
+- CSS3
+- Vanilla JavaScript
+- Python
+- Apache Airflow
+- PostgreSQL
+- Google BigQuery
+- dbt
+- OpenAI
+- Docker
 
 ---
 
-# Success Criteria
+# Branding
 
-Phase 1 is considered complete when:
+Use the provided branding assets only.
 
-- All planned pages exist.
-- Navigation works correctly.
-- Branding is consistent.
-- Responsive layout functions correctly.
-- Shared components are reused.
-- Placeholder modules are professional.
-- Documentation is complete.
-- Repository structure is organized.
+Logo:
+
+- `logop.png`
+
+Favicon:
+
+- `faviconp.png`
+
+Do not replace or modify branding.
 
 ---
 
-# Codex Development Instructions
+# Development Rules
 
-Codex must treat this document as the highest-level project specification.
+- Build a platform, not a website.
+- Keep the interface simple.
+- Reuse shared components.
+- Do not duplicate code.
+- Do not introduce unnecessary frameworks.
+- Keep the project modular and maintainable.
 
-Do not redesign the platform architecture.
+---
 
-Do not introduce additional frameworks.
+# Codex Instructions
 
-Do not change branding.
-
-Do not remove planned modules.
-
-Follow all subsequent documentation files before implementing any feature.
-
-When uncertainty exists, preserve the existing architecture and use placeholders instead of inventing new functionality.
+- Follow this document as the primary project specification.
+- Do not redesign the architecture.
+- Do not add informational pages.
+- Do not recreate third-party tools.
+- Implement only the defined platform structure.
+- Future integrations should use placeholders until implemented.
 
 ---
 
 # Document Information
 
-Document:
-01_PROJECT_OVERVIEW.md
+Document: 01_PROJECT_OVERVIEW.md
 
-Project:
-DeTLeng Platform
+Version: 2.0
 
-Document Version:
-1.0
+Status: Approved
 
-Status:
-Approved
-
-Phase:
-Phase 1
-
-Last Updated:
-2026-07-16
-
-Author:
-DeTLeng Platform Engineering
+Phase: 1
