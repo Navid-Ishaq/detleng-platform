@@ -365,7 +365,7 @@ Future links may be added without redesigning the footer.
 
 # Ecosystem Section
 
-Every page should display the official DeTLeng Ecosystem.
+Every page must display the official **DeTLeng Ecosystem** section.
 
 Include links to:
 
@@ -379,7 +379,34 @@ Inteligencia
 
 Agents
 
-This section should remain identical across the platform.
+
+
+
+
+This section should remain identical across the entire platform and provide quick navigation to other DeTLeng properties.
+
+The following websites must always be included.
+
+| Platform | URL | Purpose |
+|----------|-----|---------|
+| **DeTLeng** | https://www.detleng.com | Data Engineering • ETL • Analytics • Business Intelligence |
+| **Insights** | https://insights.detleng.com | Research • Articles • Knowledge Hub |
+| **Case Studies** | https://casestudy.detleng.com | Projects • Implementations • Success Stories |
+| **Inteligencia DeTLeng** | https://inteligencia.detleng.com | Knowledge • Insights • Applied Intelligence |
+| **Agents DeTLeng** | https://agents.detleng.com | AI Agents • Automation • Intelligent Workflows |
+
+## UI Requirements
+
+The Ecosystem section should:
+
+- appear near the bottom of every page
+- use the same layout on every page
+- use the same spacing and styling
+- remain fully responsive
+- open all external links in a new browser tab (`target="_blank"`)
+- preserve consistent branding across the platform
+
+The Ecosystem section is considered a shared platform component and must remain visually identical throughout the DeTLeng Platform.
 
 ---
 
