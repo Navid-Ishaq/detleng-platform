@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="DeTLeng Platform operational dashboard.">
+  <title>DeTLeng Platform | Dashboard</title>
+  <link rel="icon" href="images/faviconp.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="dashboard">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Primary navigation">
+      <a class="brand" href="index.html" aria-label="DeTLeng Platform home"><img src="images/logop.png" alt="DeTLeng" width="184" height="48"></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation menu"><span></span><span></span><span></span></button>
+      <ul class="nav-menu" id="primary-menu"><li><a href="index.html" data-nav="home">Home</a></li><li><a href="dashboard.html" data-nav="dashboard">Dashboard</a></li></ul>
+    </nav>
+  </header>
+
+  <main id="main-content" class="dashboard-main">
+    <section class="dashboard-hero">
+      <div class="container dashboard-heading">
+        <div><p class="eyebrow"><span class="status-dot"></span> Operational control center</p><h1>Platform Dashboard</h1><p>Access the tools that power your data engineering workflow.</p></div>
+        <div class="phase-pill"><span>Phase 1</span><strong>Frontend foundation</strong></div>
+      </div>
+    </section>
+
+    <section class="modules-section" aria-labelledby="modules-title">
+      <div class="container">
+        <div class="modules-bar"><div><h2 id="modules-title">Platform Modules</h2><p>Choose a module to continue.</p></div><span>5 modules</span></div>
+        <div class="module-grid">
+          <article class="module-card" data-module="Apache Airflow">
+            <div class="module-top"><span class="module-icon airflow">AF</span><span class="module-status">Coming soon</span></div>
+            <div><h3>Apache Airflow</h3><p>Launch and monitor data orchestration workflows.</p></div>
+            <div class="module-meta"><span>Orchestration</span><span>Future integration</span></div>
+            <a class="module-action placeholder-action" href="/airflow" data-placeholder="true">Open Airflow <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="module-card" data-module="PostgreSQL">
+            <div class="module-top"><span class="module-icon postgres">PG</span><span class="module-status">Coming soon</span></div>
+            <div><h3>PostgreSQL</h3><p>Access the administration interface for platform data.</p></div>
+            <div class="module-meta"><span>Database</span><span>Future integration</span></div>
+            <a class="module-action placeholder-action" href="/postgresql" data-placeholder="true">Open PostgreSQL <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="module-card" data-module="dbt">
+            <div class="module-top"><span class="module-icon dbt">dbt</span><span class="module-status">Coming soon</span></div>
+            <div><h3>dbt</h3><p>Explore analytics models, documentation, and lineage.</p></div>
+            <div class="module-meta"><span>Transformation</span><span>Future integration</span></div>
+            <a class="module-action placeholder-action" href="/dbt" data-placeholder="true">Open dbt <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="module-card module-card-wide" data-module="Dashboard Engine">
+            <div class="module-top"><span class="module-icon engine">DE</span><span class="module-status">Coming soon</span></div>
+            <div><h3>Dashboard Engine</h3><p>Generate automated business outputs from the Analytics Layer.</p></div>
+            <ul class="output-list"><li>Excel Dashboard</li><li>KPI Summary</li><li>Executive Report</li><li>Data Quality Report</li></ul>
+            <button class="module-action placeholder-action" type="button" data-placeholder="true">Generate Dashboard <span aria-hidden="true">→</span></button>
+          </article>
+          <article class="module-card module-card-highlight" data-module="AI Assistant">
+            <div class="module-top"><span class="module-icon ai">AI</span><span class="module-status module-status-live">Available</span></div>
+            <div><h3>AI Assistant</h3><p>Turn business questions into clear, actionable insights.</p></div>
+            <div class="module-meta"><span>Business insights</span><span>External service</span></div>
+            <a class="module-action" href="https://casestudy.detleng.com/" target="_blank" rel="noopener noreferrer">Open AI Assistant <span aria-hidden="true">↗</span></a>
+          </article>
+        </div>
+        <div class="notice" role="status" aria-live="polite"><span aria-hidden="true">i</span><p><strong>Frontend foundation</strong> — Platform modules are prepared for future backend integration. No external systems are connected in this phase.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-main"><div class="footer-brand"><img src="images/logop.png" alt="DeTLeng" width="158" height="41"><p>Engineering data into business value.</p></div><nav aria-label="DeTLeng Ecosystem"><h2>DeTLeng Ecosystem</h2><ul class="ecosystem-links"><li><a href="https://www.detleng.com" target="_blank" rel="noopener noreferrer">DeTLeng <span aria-hidden="true">↗</span></a></li><li><a href="https://insights.detleng.com" target="_blank" rel="noopener noreferrer">Insights <span aria-hidden="true">↗</span></a></li><li><a href="https://casestudy.detleng.com" target="_blank" rel="noopener noreferrer">Case Studies <span aria-hidden="true">↗</span></a></li><li><a href="https://inteligencia.detleng.com" target="_blank" rel="noopener noreferrer">Inteligencia <span aria-hidden="true">↗</span></a></li><li><a href="https://agents.detleng.com" target="_blank" rel="noopener noreferrer">Agents <span aria-hidden="true">↗</span></a></li></ul></nav></div>
+    <div class="container footer-bottom"><p>© <span data-current-year></span> DeTLeng. All rights reserved.</p><p>DeTLeng Platform · Phase 1</p></div>
+  </footer>
+  <div class="toast" data-toast role="status" aria-live="polite" aria-hidden="true"><strong data-toast-title>Module</strong><span>This integration will be connected in a future phase.</span></div>
+  <a class="support-button" data-support-link href="#" aria-label="Contact DeTLeng support by email"><span aria-hidden="true">?</span> Support</a>
+  <script src="js/app.js"></script>
+</body>
+</html>
