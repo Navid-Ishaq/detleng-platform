@@ -1,0 +1,6 @@
+.env
+backend/dbt/site/*
+!backend/dbt/site/.gitkeep
+backend/dbt/project/target/
+backend/dbt/project/logs/
+runtime/

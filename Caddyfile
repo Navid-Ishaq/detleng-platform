@@ -1,0 +1,43 @@
+{
+    auto_https off
+}
+
+:80 {
+    encode zstd gzip
+
+    redir /airflow /airflow/ 308
+    handle_path /airflow/* {
+        reverse_proxy {$AIRFLOW_UPSTREAM} {
+            header_up X-Forwarded-Prefix /airflow
+            header_up X-Forwarded-Proto {scheme}
+            header_up X-Forwarded-Host {host}
+        }
+    }
+
+    redir /postgresql /postgresql/ 308
+    handle_path /postgresql/* {
+        reverse_proxy pgadmin:80 {
+            header_up X-Script-Name /postgresql
+            header_up X-Forwarded-Prefix /postgresql
+            header_up X-Forwarded-Proto {scheme}
+            header_up X-Forwarded-Host {host}
+        }
+    }
+
+    redir /dbt /dbt/ 308
+    handle_path /dbt/* {
+        root * /srv/dbt
+        try_files {path} {path}/ /index.html
+        file_server
+    }
+
+    respond /healthz `{"status":"ok","service":"detleng-platform"}` 200 {
+        close
+    }
+
+    handle {
+        root * /srv/platform
+        try_files {path} {path}/ /index.html
+        file_server
+    }
+}

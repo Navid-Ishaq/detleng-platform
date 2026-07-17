@@ -1,0 +1,7 @@
+name: detleng_platform
+version: 1.0.0
+config-version: 2
+profile: detleng_platform
+model-paths: ["models"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
