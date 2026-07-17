@@ -1,106 +1,188 @@
-03_DEVELOPMENT_RULES.md
+# 03_DEVELOPMENT_RULES.md
 
-Ye sabse important.
+# DeTLeng Platform
 
-Ye Codex ko discipline sikhayegi.
+## Development Rules
 
-Example
+---
 
-Never duplicate CSS.
+## Purpose
 
-Use common stylesheet.
+Define the implementation standards for the DeTLeng Platform.
 
-Never duplicate footer.
+All development must follow these rules.
 
-Use reusable components.
+---
 
-Every page must contain
+# General Rules
 
-Logo
+- Build a platform, not a website.
+- Keep the code simple and maintainable.
+- Do not add features outside the documented scope.
+- Follow the approved project structure.
 
-Navigation
+---
 
-Footer
+# HTML
 
-Support Button
+- Use semantic HTML5.
+- Keep markup clean and readable.
+- Use meaningful class names.
+- Avoid inline styles.
+- Avoid inline JavaScript.
 
-Ecosystem
+---
 
-Chat Widget
+# CSS
 
-Responsive layout
+- Use a single shared stylesheet.
+- Do not duplicate CSS.
+- Reuse existing classes whenever possible.
+- Keep styles modular and organized.
 
-Active menu highlighting
+---
 
-Hover effects
+# JavaScript
 
-Professional comments
+- Use a single shared JavaScript file.
+- Keep functions reusable.
+- Do not duplicate logic.
+- Avoid unnecessary libraries.
 
-Readable HTML
+---
 
-Ye file bahut powerful hogi.
+# Shared Components
 
+The following components must remain identical across all pages:
 
-Support Button
+- Navigation
+- Footer
+- DeTLeng Ecosystem
+- Support Button
 
-Main isko aur improve karunga.
+---
 
-Aap ne jo Outlook ka screenshot diya hai, woh mujhe pasand aaya.
+# Responsive Design
 
-Main uska standard banaunga.
+Support:
 
-Support
+- Desktop
+- Tablet
+- Mobile
 
-↓
+No desktop-only layouts.
 
-mailto
+---
 
-↓
+# Navigation
 
-Subject
+- Fixed header
+- Active menu highlighting
+- Consistent spacing
+- Consistent behavior
 
-Platform Support Request
+---
 
-↓
+# Dashboard
 
-Body
+The Dashboard is the operational workspace.
 
-Name
+Cards must perform only one action:
 
-Company
+| Module | Action |
+|---------|--------|
+| Apache Airflow | Launch Airflow |
+| PostgreSQL | Launch PostgreSQL |
+| dbt | Launch dbt |
+| Dashboard Engine | Generate Excel Dashboard |
+| AI Assistant | Open AI Assistant |
 
-Project
+Do not recreate third-party applications.
 
-Platform Module
+---
 
-Description
+# Support Button
 
-Expected Outcome
+Use a standard `mailto:` link.
 
-Priority
+Subject:
 
-Attachments
+`DeTLeng Platform Support Request`
 
-Regards
+Email template:
 
-Ye professional lagega.
+- Name
+- Company
+- Project
+- Platform Module
+- Description
+- Expected Outcome
+- Priority
+- Attachments
 
-Ecosystem
+No backend forms.
 
-Main footer ko standard banaunga.
+---
 
-DeTLeng
+# Footer
 
-Platform
+Display the same footer on every page.
 
-Insights
+Include:
 
-Case Studies
+- DeTLeng
+- Platform
+- Insights
+- Case Studies
+- Inteligencia
+- Agents
+- Support
 
-Inteligencia
+Open external links in a new tab.
 
-Agents
+---
 
-Support
+# Code Quality
 
-Ye har page par same.
+- Reuse code.
+- Avoid duplication.
+- Remove unused code.
+- Keep files organized.
+- Write readable code.
+- Keep comments concise.
+
+---
+
+# Future Integrations
+
+Use placeholders until implementation is available.
+
+Examples:
+
+- Airflow
+- PostgreSQL
+- dbt
+- Dashboard Engine
+- AI Assistant
+
+---
+
+# Codex Instructions
+
+- Follow these rules for every implementation.
+- Do not introduce unnecessary frameworks.
+- Do not duplicate code.
+- Preserve project consistency.
+- Prefer reusable solutions.
+
+---
+
+# Document Information
+
+Document: 03_DEVELOPMENT_RULES.md
+
+Version: 1.0
+
+Status: Approved
+
+Phase: 1
