@@ -28,26 +28,69 @@
 
     <section class="modules-section" aria-labelledby="modules-title">
       <div class="container">
-        <div class="modules-bar"><div><h2 id="modules-title">Platform Modules</h2><p>Choose a module to continue.</p></div><span>5 modules</span></div>
+        <div class="modules-bar">
+          <div>
+            <h2 id="modules-title">Local Environment</h2>
+            <p>Note: All Local Environment links open in a new browser tab and require the local DeTLeng Docker platform to be running on this computer.</p>
+          </div>
+          <span>3 modules</span>
+        </div>
         <div class="module-grid">
-          <article class="module-card" data-module="Apache Airflow">
-            <div class="module-top"><span class="module-icon airflow">AF</span><span class="module-status">Coming soon</span></div>
-            <div><h3>Apache Airflow</h3><p>Launch and monitor data orchestration workflows.</p></div>
-            <div class="module-meta"><span>Orchestration</span><span>Future integration</span></div>
-            <a class="module-action placeholder-action" href="/airflow/" data-service-path="/airflow/">Open Airflow <span aria-hidden="true">→</span></a>
+          <article class="module-card" data-module="Local Airflow">
+            <div class="module-top"><span class="module-icon airflow">AF</span><span class="module-status module-status-live">Local</span></div>
+            <div><h3>Local Airflow</h3><p>Launch and monitor local data orchestration workflows.</p></div>
+            <div class="module-meta"><span>Orchestration</span><span>Docker platform</span></div>
+            <a class="module-action placeholder-action" href="http://localhost:8088/airflow/" target="_blank" rel="noopener noreferrer">Open Local Airflow <span aria-hidden="true">↗</span></a>
           </article>
-          <article class="module-card" data-module="PostgreSQL">
-            <div class="module-top"><span class="module-icon postgres">PG</span><span class="module-status">Coming soon</span></div>
-            <div><h3>PostgreSQL</h3><p>Access the administration interface for platform data.</p></div>
-            <div class="module-meta"><span>Database</span><span>Future integration</span></div>
-            <a class="module-action placeholder-action" href="/postgresql/" data-service-path="/postgresql/">Open PostgreSQL <span aria-hidden="true">→</span></a>
+          <article class="module-card" data-module="Local PostgreSQL">
+            <div class="module-top"><span class="module-icon postgres">PG</span><span class="module-status module-status-live">Local</span></div>
+            <div><h3>Local PostgreSQL</h3><p>Access the local pgAdmin interface for platform data.</p></div>
+            <div class="module-meta"><span>Database</span><span>Docker platform</span></div>
+            <a class="module-action placeholder-action" href="http://localhost:8088/postgresql/" target="_blank" rel="noopener noreferrer">Open Local PostgreSQL <span aria-hidden="true">↗</span></a>
           </article>
-          <article class="module-card" data-module="dbt">
-            <div class="module-top"><span class="module-icon dbt">dbt</span><span class="module-status">Coming soon</span></div>
-            <div><h3>dbt</h3><p>Explore analytics models, documentation, and lineage.</p></div>
-            <div class="module-meta"><span>Transformation</span><span>Future integration</span></div>
-            <a class="module-action placeholder-action" href="/dbt/" data-service-path="/dbt/">Open dbt <span aria-hidden="true">→</span></a>
+          <article class="module-card" data-module="Local dbt Docs">
+            <div class="module-top"><span class="module-icon dbt">dbt</span><span class="module-status module-status-live">Local</span></div>
+            <div><h3>Local dbt Docs</h3><p>Explore local analytics models, documentation, and lineage.</p></div>
+            <div class="module-meta"><span>Transformation</span><span>Docker platform</span></div>
+            <a class="module-action placeholder-action" href="http://localhost:8088/dbt/" target="_blank" rel="noopener noreferrer">Open Local dbt Docs <span aria-hidden="true">↗</span></a>
           </article>
+        </div>
+
+        <div class="modules-bar" style="margin-top: 50px;">
+          <div><h2 id="cloud-modules-title">Cloud Environment</h2><p>Production-ready module routes for future cloud deployment.</p></div>
+          <span>3 modules</span>
+        </div>
+        <div class="module-grid" aria-labelledby="cloud-modules-title">
+          <article class="module-card" data-module="Cloud Airflow">
+            <div class="module-top"><span class="module-icon airflow">AF</span><span class="module-status">Future cloud</span></div>
+            <div><h3>Cloud Airflow</h3><p>Launch and monitor cloud data orchestration workflows.</p></div>
+            <div class="module-meta"><span>Orchestration</span><span>Relative route</span></div>
+            <a class="module-action placeholder-action" href="/airflow/" data-service-path="/airflow/">Open Cloud Airflow <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="module-card" data-module="Cloud PostgreSQL">
+            <div class="module-top"><span class="module-icon postgres">PG</span><span class="module-status">Future cloud</span></div>
+            <div><h3>Cloud PostgreSQL</h3><p>Access the cloud pgAdmin interface for platform data.</p></div>
+            <div class="module-meta"><span>Database</span><span>Relative route</span></div>
+            <a class="module-action placeholder-action" href="/postgresql/" data-service-path="/postgresql/">Open Cloud PostgreSQL <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="module-card" data-module="Cloud dbt Docs">
+            <div class="module-top"><span class="module-icon dbt">dbt</span><span class="module-status">Future cloud</span></div>
+            <div><h3>Cloud dbt Docs</h3><p>Explore cloud analytics models, documentation, and lineage.</p></div>
+            <div class="module-meta"><span>Transformation</span><span>Relative route</span></div>
+            <a class="module-action placeholder-action" href="/dbt/" data-service-path="/dbt/">Open Cloud dbt Docs <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+
+        <div class="notice" id="cloud-environment-status" data-cloud-status="offline" role="status" aria-live="polite">
+          <span aria-hidden="true">☁</span>
+          <p><strong>Cloud Status</strong> — <span data-cloud-status-label>🔴 Offline</span></p>
+        </div>
+
+        <div class="modules-bar" style="margin-top: 50px;">
+          <div><h2 id="additional-modules-title">Additional Platform Modules</h2><p>Existing platform capabilities and future outputs.</p></div>
+          <span>2 modules</span>
+        </div>
+        <div class="module-grid" aria-labelledby="additional-modules-title">
           <article class="module-card module-card-wide" data-module="Dashboard Engine">
             <div class="module-top"><span class="module-icon engine">DE</span><span class="module-status">Coming soon</span></div>
             <div><h3>Dashboard Engine</h3><p>Generate automated business outputs from the Analytics Layer.</p></div>
@@ -61,7 +104,7 @@
             <a class="module-action" href="https://casestudy.detleng.com/" target="_blank" rel="noopener noreferrer">Open AI Assistant <span aria-hidden="true">↗</span></a>
           </article>
         </div>
-        <div class="notice" role="status" aria-live="polite"><span aria-hidden="true">i</span><p><strong>Frontend foundation</strong> — Platform modules are prepared for future backend integration. No external systems are connected in this phase.</p></div>
+        <div class="notice"><span aria-hidden="true">i</span><p><strong>Platform foundation</strong> — Local modules connect to this computer's Docker platform. Cloud modules retain production-ready relative routes.</p></div>
       </div>
     </section>
   </main>
