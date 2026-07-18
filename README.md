@@ -32,7 +32,7 @@ The local pgAdmin credentials and PostgreSQL password are in `.env`. The include
 
 Default pgAdmin login:
 
-- Email: `info@detleng.local`
+- Email: `info@detleng.com`
 - Password: `DLPlatform@2026`
 
 ## Run the data workflow

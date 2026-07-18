@@ -99,6 +99,9 @@ Clean intermediate CSV files are written to `data/work`.
 
 Local defaults are stored in `.env.example` so a new clone can run without interactive secret generation. They are not safe for shared environments. Before any remote deployment:
 
+- pgAdmin development email: `info@detleng.com`;
+- pgAdmin development password: `DLPlatform@2026`;
+
 - replace every database and pgAdmin password;
 - generate a strong Airflow API secret and Fernet key;
 - generate a shared Airflow JWT secret for the API server and scheduler;
