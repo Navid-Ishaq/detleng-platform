@@ -5,3 +5,9 @@ profile: detleng_platform
 model-paths: ["models"]
 target-path: "target"
 clean-targets: ["target", "dbt_packages"]
+
+models:
+  detleng_platform:
+    analytics:
+      +schema: analytics
+      +materialized: table

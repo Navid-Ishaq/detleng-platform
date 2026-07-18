@@ -1,25 +1,42 @@
 [CmdletBinding()]
-param([string]$BaseUrl = 'http://localhost:8088')
+param(
+    [string]$BaseUrl = 'http://localhost:8088',
+    [int]$Retries = 1,
+    [int]$DelaySeconds = 2
+)
 
 $ErrorActionPreference = 'Stop'
-$results = @()
+$routes = @(
+    @{ Name = 'Gateway'; Path = '/healthz'; Status = @(200) },
+    @{ Name = 'Airflow'; Path = '/airflow/'; Status = @(200, 302, 307) },
+    @{ Name = 'PostgreSQL/pgAdmin'; Path = '/postgresql/'; Status = @(200, 302) },
+    @{ Name = 'dbt docs'; Path = '/dbt/'; Status = @(200) }
+)
 
-function Test-Route {
-    param([string]$Name, [string]$Path, [int[]]$ExpectedStatus)
-    try {
-        $response = Invoke-WebRequest -Uri "$BaseUrl$Path" -MaximumRedirection 0 -SkipHttpErrorCheck -TimeoutSec 10
-        $status = [int]$response.StatusCode
-        $results += [pscustomobject]@{ Name = $Name; Status = $status; Pass = $status -in $ExpectedStatus; Location = [string]$response.Headers.Location }
-    } catch {
-        $results += [pscustomobject]@{ Name = $Name; Status = 'ERROR'; Pass = $false; Location = $_.Exception.Message }
+for ($attempt = 1; $attempt -le $Retries; $attempt++) {
+    $results = foreach ($route in $routes) {
+        try {
+            $response = Invoke-WebRequest -Uri "$BaseUrl$($route.Path)" -MaximumRedirection 0 -SkipHttpErrorCheck -TimeoutSec 10
+            $status = [int]$response.StatusCode
+            [pscustomobject]@{
+                Module = $route.Name
+                Status = $status
+                Pass = $status -in $route.Status
+                Location = [string]$response.Headers.Location
+            }
+        } catch {
+            [pscustomobject]@{ Module = $route.Name; Status = 'ERROR'; Pass = $false; Location = $_.Exception.Message }
+        }
     }
-    Set-Variable -Name results -Value $results -Scope 1
+
+    if ($results.Pass -notcontains $false) {
+        $results | Format-Table -AutoSize
+        Write-Host 'All platform routes are operational.'
+        exit 0
+    }
+
+    if ($attempt -lt $Retries) { Start-Sleep -Seconds $DelaySeconds }
 }
 
-Test-Route -Name 'Gateway' -Path '/healthz' -ExpectedStatus 200
-Test-Route -Name 'Airflow' -Path '/airflow/' -ExpectedStatus @(200, 302, 307)
-Test-Route -Name 'PostgreSQL/pgAdmin' -Path '/postgresql/' -ExpectedStatus @(200, 302)
-Test-Route -Name 'dbt docs' -Path '/dbt/' -ExpectedStatus 200
-
 $results | Format-Table -AutoSize
-if ($results.Pass -contains $false) { throw 'One or more platform routes failed.' }
+throw 'One or more platform routes failed. Run docker compose ps and docker compose logs for details.'

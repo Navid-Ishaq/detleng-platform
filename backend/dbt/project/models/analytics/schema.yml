@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: order_summary
+    description: Country-level order metrics produced from the validated raw dataset.
+    columns:
+      - name: country
+        data_tests:
+          - not_null
+          - unique
+      - name: order_count
+        data_tests:
+          - not_null
+      - name: total_amount
+        data_tests:
+          - not_null

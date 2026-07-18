@@ -20,9 +20,7 @@
 
 	redir /dbt /dbt/ 308
 	handle_path /dbt/* {
-		root * /srv/dbt
-		try_files {path} {path}/index.html /index.html
-		file_server
+		reverse_proxy dbt-docs:8080
 	}
 
 	respond /healthz `{"status":"ok","service":"detleng-platform"}` 200 {

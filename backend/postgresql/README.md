@@ -1,5 +1,8 @@
-# PostgreSQL integration
+# PostgreSQL and pgAdmin
 
-PostgreSQL 17 remains on the host. The pgAdmin container provides the browser administration surface at `/postgresql/` and receives a pre-registered host connection from `servers.json`.
+The platform uses PostgreSQL 17.10 inside Compose. Initialization creates:
 
-The PostgreSQL password is never stored in `servers.json`. pgAdmin will ask for it when the server is opened; the value may be saved in pgAdmin's private Docker volume if the user chooses.
+- `airflow` database and role for Airflow metadata;
+- `detleng` database and role for datasets and analytics.
+
+pgAdmin is available only through `/postgresql/` and pre-registers the `detleng` database server. Enter the `POSTGRES_PASSWORD` value from `.env` when pgAdmin first asks for the database password.

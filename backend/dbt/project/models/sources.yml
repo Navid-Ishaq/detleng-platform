@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: Clean datasets loaded by the DeTLeng Airflow pipeline.
+    tables:
+      - name: customer_orders
+        description: Latest validated customer order dataset.

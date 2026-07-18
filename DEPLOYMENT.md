@@ -1,63 +1,143 @@
-# DeTLeng Platform deployment
+# DeTLeng local platform deployment
 
-## Why GitHub Pages returns 404
-
-GitHub Pages is a static-file host. A request to `https://platform.detleng.com/airflow/` is handled by GitHub Pages as a lookup for a static `airflow/index.html`. It cannot start containers, proxy HTTP to Airflow or pgAdmin, connect to PostgreSQL, or run dbt. DNS also cannot send different URL paths on one hostname to different servers.
-
-The same-origin production URLs therefore require `platform.detleng.com` to terminate at a real server-side proxy. The recommended production design is:
+## Architecture
 
 ```text
-Internet
-  -> platform.detleng.com (DNS A/AAAA)
-  -> Caddy on VM/VPS (ports 80/443)
-       -> /              static frontend
-       -> /airflow/      private Airflow API server
-       -> /postgresql/   private pgAdmin container -> private PostgreSQL
-       -> /dbt/          generated static dbt documentation
+Browser -> http://localhost:8088 -> Caddy
+  |-- /airflow/      -> Airflow 3 API server
+  |                       |-- scheduler
+  |                       |-- DAG processor
+  |                       `-- triggerer
+  |-- /postgresql/  -> pgAdmin -> PostgreSQL 17
+  |-- /dbt/          -> long-running dbt documentation service
+  `-- /              -> existing frontend
+
+data/inbox -> Airflow DAG -> raw.customer_orders
+                              -> dbt run/test
+                              -> analytics.order_summary
+                              -> regenerated dbt documentation
 ```
 
-The GitHub repository remains the source and CI/CD origin; GitHub Pages is no longer the runtime for the custom domain.
+All application services communicate on the private Compose network. Only Caddy publishes browser ports. PostgreSQL and Airflow are not exposed directly on host ports.
 
-## Local development
+## Dependencies
 
-1. Copy `.env.example` to `.env`.
-2. Set both passwords, the local Airflow/dbt executable paths when needed, and the real dbt project path.
-3. Configure/restart Airflow with:
+Required on the host:
 
-   ```text
-   AIRFLOW__API__BASE_URL=http://localhost:8088/airflow
-   AIRFLOW__CORE__EXECUTION_API_SERVER_URL=http://localhost:8088/airflow/execution/
-   FORWARDED_ALLOW_IPS=*
-   airflow api-server --proxy-headers
-   ```
+- Docker Desktop or Docker Engine
+- Docker Compose v2.14 or newer
+- 4 GB minimum Docker memory, 8 GB recommended
+- PowerShell for the convenience scripts
+- Internet access on the first build to pull images and Python packages
+- Free host ports 8088 and 8443
 
-4. Generate dbt docs: `powershell -ExecutionPolicy Bypass -File scripts/generate-dbt-docs.ps1`.
-5. Start: `powershell -ExecutionPolicy Bypass -File scripts/start-platform.ps1`.
-6. Verify: `powershell -ExecutionPolicy Bypass -File scripts/test-routes.ps1`.
-7. Open `http://localhost:8088/dashboard.html`.
+Not required on the host:
 
-## Recommended production deployment
+- Python
+- Airflow
+- PostgreSQL
+- pgAdmin
+- dbt
+- Caddy
 
-1. Provision a Linux VM/VPS with Docker Engine and Compose. Allow inbound TCP 80 and 443 only; keep 5432 and 8080 private.
-2. Clone this repository onto the server.
-3. Copy `.env.production.example` to `.env`, replace all placeholder secrets, and set `AIRFLOW_UPSTREAM` to an Airflow address reachable only from the Docker network/host.
-4. Configure Airflow with:
+These are provided by pinned container images or repository Dockerfiles. Git is installed inside the dbt image because dbt validates it as a required dependency.
 
-   ```text
-   AIRFLOW__API__BASE_URL=https://platform.detleng.com/airflow
-   AIRFLOW__CORE__EXECUTION_API_SERVER_URL=https://platform.detleng.com/airflow/execution/
-   airflow api-server --proxy-headers
-   ```
+## First start
 
-5. Generate dbt documentation during deployment. The generated `backend/dbt/site` directory must contain at least `index.html`, `manifest.json`, and `catalog.json` before Caddy starts.
-6. Change the DNS for `platform.detleng.com` from the GitHub Pages target to A/AAAA records for the VM. Remove the GitHub Pages custom-domain setting (and then remove `CNAME` from the Pages publishing branch) during the cutover.
-7. Run `docker compose up -d`. With `PLATFORM_ADDRESS=platform.detleng.com`, Caddy obtains and renews HTTPS certificates automatically.
-8. Run `scripts/test-routes.ps1 -BaseUrl https://platform.detleng.com` from a trusted administration machine.
+```powershell
+git clone <repository-url>
+cd detleng-platform-main
+Copy-Item .env.example .env
+.\scripts\start-platform.ps1
+```
 
-Do not expose pgAdmin publicly without strong credentials and an additional access policy such as a VPN, IP allowlist, or identity-aware proxy.
+The first build can take several minutes. The script waits for all four gateway checks before reporting success.
 
-## Alternative: retain GitHub Pages
+Verify independently:
 
-If GitHub Pages must continue serving `platform.detleng.com`, deploy Caddy/backend services at another hostname such as `services.detleng.com`. Set `PLATFORM_ADDRESS=services.detleng.com` on that server and set `backendOrigin` in `js/config.js` to `https://services.detleng.com` before publishing Pages.
+```powershell
+.\scripts\test-routes.ps1
+docker compose ps
+```
 
-The buttons will then open `https://services.detleng.com/airflow/`, `/postgresql/`, and `/dbt/`. They cannot remain at `https://platform.detleng.com/...` unless a server-side proxy/CDN sits in front of GitHub Pages and routes those paths to the backend.
+Expected routes:
+
+| Module | URL | Expected |
+|---|---|---|
+| Airflow | `http://localhost:8088/airflow/` | Airflow UI, no blank screen |
+| PostgreSQL | `http://localhost:8088/postgresql/` | pgAdmin login/application |
+| dbt | `http://localhost:8088/dbt/` | dbt documentation site; `dbt-docs` remains Up and healthy |
+
+## Airflow reverse proxy configuration
+
+Airflow 3 receives these values from Compose:
+
+```text
+AIRFLOW__API__BASE_URL=http://localhost:8088/airflow
+AIRFLOW__CORE__EXECUTION_API_SERVER_URL=http://airflow-api-server:8080/airflow/execution/
+FORWARDED_ALLOW_IPS=*
+airflow api-server --proxy-headers
+```
+
+Caddy uses `handle /airflow/*`, not `handle_path`, because Airflow must receive its `/airflow` prefix unchanged. Local authentication uses Airflow's development-only Simple Auth all-admin mode.
+
+## Dataset pipeline
+
+The `detleng_dataset_to_analytics` DAG processes the newest supported file in `data/inbox`:
+
+1. Discover CSV/Excel dataset.
+2. Write a JSON profile to `data/profiles`.
+3. Normalize columns, trim strings, parse dates and amounts, remove empty/duplicate rows.
+4. Validate required columns, nulls, row count, and non-negative amounts; write results to `data/validation`.
+5. Replace `raw.customer_orders` in the `detleng` database.
+6. Run and test dbt.
+7. Publish regenerated dbt documentation.
+
+Clean intermediate CSV files are written to `data/work`.
+
+## Credentials
+
+Local defaults are stored in `.env.example` so a new clone can run without interactive secret generation. They are not safe for shared environments. Before any remote deployment:
+
+- replace every database and pgAdmin password;
+- generate a strong Airflow API secret and Fernet key;
+- generate a shared Airflow JWT secret for the API server and scheduler;
+- replace Simple Auth with an appropriate authentication manager;
+- use Docker secrets or a managed secret store;
+- add backups and monitoring;
+- restrict pgAdmin with VPN, IP allowlisting, or an identity-aware proxy.
+
+Changing PostgreSQL initialization credentials after the data volume exists does not rewrite existing roles. For a clean local reset, run `scripts/stop-platform.ps1 -RemoveData`, then start again. This permanently deletes local platform data.
+
+## Troubleshooting
+
+Airflow blank page or incorrect redirects:
+
+```powershell
+docker compose logs airflow-api-server
+docker compose exec airflow-api-server airflow config get-value api base_url
+```
+
+The printed base URL must be `http://localhost:8088/airflow`.
+
+dbt returns 404 or the container exits:
+
+```powershell
+docker compose logs dbt-docs
+docker compose exec dbt-docs git --version
+.\scripts\generate-dbt-docs.ps1
+Test-Path backend\dbt\site\index.html
+```
+
+pgAdmin cannot connect:
+
+```powershell
+docker compose ps postgres pgadmin
+docker compose logs postgres pgadmin
+```
+
+Use server `postgres`, database `detleng`, user `detleng`, and the `POSTGRES_PASSWORD` value from `.env`.
+
+## Production boundary
+
+This Compose stack is designed for local development. GitHub Pages cannot run these backend services because it is a static host. Production requires a VM, container platform, or Kubernetes deployment where Caddy or another reverse proxy can reach Airflow, pgAdmin, PostgreSQL, and the generated dbt site. Do not expose ports 5432 or 8080 publicly.

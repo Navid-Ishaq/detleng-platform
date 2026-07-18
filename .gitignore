@@ -1,6 +1,16 @@
 .env
+__pycache__/
+*.pyc
 backend/dbt/site/*
 !backend/dbt/site/.gitkeep
 backend/dbt/project/target/
 backend/dbt/project/logs/
 runtime/
+backend/airflow/logs/*
+!backend/airflow/logs/.gitkeep
+data/work/*
+!data/work/.gitkeep
+data/profiles/*
+!data/profiles/.gitkeep
+data/validation/*
+!data/validation/.gitkeep

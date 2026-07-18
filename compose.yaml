@@ -1,30 +1,136 @@
 name: detleng-platform
 
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: backend/airflow/Dockerfile
+  image: detleng/airflow:3.3.0
+  environment: &airflow-environment
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "False"
+    AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:${AIRFLOW_DB_PASSWORD:-airflow_dev_password}@postgres:5432/airflow
+    AIRFLOW__API__BASE_URL: http://localhost:${PLATFORM_HTTP_PORT:-8088}/airflow
+    AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-api-server:8080/airflow/execution/
+    AIRFLOW__API__SECRET_KEY: ${AIRFLOW_API_SECRET_KEY:-local-development-api-secret-change-me}
+    AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW_JWT_SECRET:-local-development-jwt-secret-change-me}
+    AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW_FERNET_KEY:-qHvAhskFOqxF0UACCKIW7iGWkWHbkQ8bAMT8iyN0hJw=}
+    FORWARDED_ALLOW_IPS: "*"
+    PLATFORM_DATABASE_URL: postgresql+psycopg2://detleng:${POSTGRES_PASSWORD:-detleng_dev_password}@postgres:5432/detleng
+    DBT_PROFILES_DIR: /opt/airflow/dbt
+  volumes:
+    - ./backend/airflow/dags:/opt/airflow/dags
+    - ./backend/airflow/logs:/opt/airflow/logs
+    - ./data:/opt/airflow/data
+    - ./backend/dbt/project:/opt/airflow/dbt
+    - ./backend/dbt/site:/opt/airflow/dbt-site
+  depends_on:
+    postgres:
+      condition: service_healthy
+
 services:
-  gateway:
-    image: caddy:2.10-alpine
+  postgres:
+    image: postgres:17.10-alpine
     restart: unless-stopped
     environment:
-      PLATFORM_ADDRESS: ${PLATFORM_ADDRESS:-:80}
-      AIRFLOW_UPSTREAM: ${AIRFLOW_UPSTREAM:-host.docker.internal:8080}
-    ports:
-      - "${PLATFORM_HTTP_PORT:-8088}:80"
-      - "${PLATFORM_HTTPS_PORT:-8443}:443"
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_SUPERUSER_PASSWORD:-postgres_dev_password}
+      POSTGRES_DB: postgres
+      AIRFLOW_DB_PASSWORD: ${AIRFLOW_DB_PASSWORD:-airflow_dev_password}
+      DETLENG_DB_PASSWORD: ${POSTGRES_PASSWORD:-detleng_dev_password}
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./:/srv/platform:ro
-      - ./backend/dbt/site:/srv/dbt:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/postgresql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airflow -d airflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  airflow-init:
+    <<: *airflow-common
+    command: ["bash", "-c", "airflow db migrate"]
+    restart: "no"
+
+  airflow-api-server:
+    <<: *airflow-common
+    command: ["airflow", "api-server", "--proxy-headers"]
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent http://localhost:8080/airflow/api/v2/monitor/health >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  airflow-scheduler:
+    <<: *airflow-common
+    command: ["airflow", "scheduler"]
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-dag-processor:
+    <<: *airflow-common
+    command: ["airflow", "dag-processor"]
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-triggerer:
+    <<: *airflow-common
+    command: ["airflow", "triggerer"]
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+  dbt-docs:
+    build:
+      context: .
+      dockerfile: backend/dbt/Dockerfile
+    image: detleng/dbt-postgres:1.11.0
+    command: ["serve"]
+    restart: unless-stopped
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: detleng
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-detleng_dev_password}
+      POSTGRES_DB: detleng
+    volumes:
+      - ./backend/dbt/project:/usr/app/dbt
+      - ./backend/dbt/site:/usr/app/site
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/index.html', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
 
   pgadmin:
-    image: dpage/pgadmin4:9.14
+    image: dpage/pgadmin4:9.16
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-info@detleng.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-DLPlatform@2026}
       PGADMIN_DISABLE_POSTFIX: "true"
       PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
       PGADMIN_CONFIG_PROXY_X_FOR_COUNT: "1"
@@ -35,16 +141,40 @@ services:
     volumes:
       - pgadmin_data:/var/lib/pgadmin
       - ./backend/postgresql/servers.json:/pgadmin4/servers.json:ro
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    depends_on:
+      postgres:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1/misc/ping"]
       interval: 10s
       timeout: 5s
-      retries: 12
-      start_period: 20s
+      retries: 20
+      start_period: 30s
+
+  gateway:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    environment:
+      PLATFORM_ADDRESS: ${PLATFORM_ADDRESS:-:80}
+      AIRFLOW_UPSTREAM: airflow-api-server:8080
+    ports:
+      - "${PLATFORM_HTTP_PORT:-8088}:80"
+      - "${PLATFORM_HTTPS_PORT:-8443}:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./:/srv/platform:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      airflow-api-server:
+        condition: service_healthy
+      pgadmin:
+        condition: service_healthy
+      dbt-docs:
+        condition: service_healthy
 
 volumes:
+  postgres_data:
+  pgadmin_data:
   caddy_data:
   caddy_config:
-  pgadmin_data:

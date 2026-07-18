@@ -1,9 +1,7 @@
-# dbt integration
+# dbt
 
-The startup script calls the existing local `dbt` executable to generate documentation, then publishes the resulting static site at `/dbt/` through Caddy. Run `scripts/generate-dbt-docs.ps1` whenever the dbt manifest or catalog changes.
+The dbt image uses dbt-postgres 1.11.0 and includes Git as a required runtime dependency. On startup it validates Git and database connectivity, parses the project, generates documentation, publishes it to `site/`, and remains running as the documentation HTTP service. Caddy proxies `/dbt/` to this healthy service.
 
-Set `DBT_PROJECT_DIR` and optionally `DBT_PROFILES_DIR` in `.env` to use an existing project. If `DBT_PROJECT_DIR` is blank, the empty starter project in `project/` is used. Its connection values come from the same PostgreSQL environment variables.
+The Airflow DAG subsequently runs and tests `analytics.order_summary`, then refreshes the published documentation. The model aggregates validated `raw.customer_orders` data by country.
 
-`DBT_POSTGRES_HOST` defaults to `localhost` because dbt runs on the host. `POSTGRES_HOST=host.docker.internal` is reserved for containers such as pgAdmin. Generated files are staged before replacing `backend/dbt/site`, so a failed generation does not erase the last working documentation site.
-
-No models, transformations, or analytics pipeline are included in Phase 2.
+Run `scripts/generate-dbt-docs.ps1` to refresh documentation independently of the DAG.

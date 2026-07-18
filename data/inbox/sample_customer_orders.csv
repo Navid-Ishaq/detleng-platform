@@ -1,0 +1,6 @@
+order_id,customer_name,country,order_date,amount
+1001,Acme Retail,Spain,2026-07-01,1250.50
+1002,Northwind GmbH,Germany,2026-07-02,980.00
+1003,Blue Coast SARL,France,2026-07-03,1435.25
+1004,Acme Retail,Spain,2026-07-04,760.00
+1005,Northwind GmbH,Germany,2026-07-05,2120.75

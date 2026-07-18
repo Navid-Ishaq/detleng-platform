@@ -1,12 +1,12 @@
 {
   "Servers": {
     "1": {
-      "Name": "Local PostgreSQL 17",
-      "Group": "DeTLeng",
-      "Host": "host.docker.internal",
+      "Name": "DeTLeng PostgreSQL 17",
+      "Group": "DeTLeng Platform",
+      "Host": "postgres",
       "Port": 5432,
-      "MaintenanceDB": "postgres",
-      "Username": "postgres",
+      "MaintenanceDB": "detleng",
+      "Username": "detleng",
       "SSLMode": "prefer"
     }
   }
