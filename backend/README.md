@@ -13,15 +13,25 @@ Browser -> Caddy gateway (:8088)
 
 Copy `.env.example` to `.env`. The startup script can create this file automatically, but deliberately refuses default passwords. Replace both `CHANGE_ME` values before startup.
 
-Airflow must use `/airflow` as its base URL. `scripts/start-platform.ps1` sets the required Airflow environment variables when it launches Airflow. If Airflow is already managed elsewhere, configure its equivalent settings:
+Airflow must use `/airflow` as its base URL. `scripts/start-platform.ps1` sets the required Airflow 3 environment variables when it launches Airflow. If Airflow is already running, environment changes cannot modify that process: configure the same values in its service definition and restart it.
 
 ```ini
-[webserver]
+[api]
 base_url = http://localhost:8088/airflow
-enable_proxy_fix = True
+
+[core]
+execution_api_server_url = http://localhost:8088/airflow/execution/
 ```
 
-For production, change the Airflow base URL to `https://platform.detleng.com/airflow`, terminate TLS at Caddy, and remove `auto_https off` from the Caddy global options.
+Start the Airflow 3 API server with proxy header support:
+
+```text
+airflow api-server --proxy-headers
+```
+
+Caddy deliberately passes `/airflow/...` upstream unchanged. Airflow uses its configured base URL to mount the UI and API under that prefix.
+
+For production, change both Airflow URLs to `https://platform.detleng.com/airflow`; Caddy automatically provisions TLS when `PLATFORM_ADDRESS=platform.detleng.com` and ports 80/443 are reachable.
 
 If Airflow or dbt is installed in a virtual environment and is not on the terminal `PATH`, set `AIRFLOW_COMMAND` or `DBT_COMMAND` to the executable's absolute path. For Airflow running inside WSL, start it in WSL on port 8080 with the proxy settings above and use `-SkipAirflow` when launching the platform.
 
@@ -31,6 +41,7 @@ If Airflow or dbt is installed in a virtual environment and is not on the termin
 - pgAdmin is only reachable through the gateway route.
 - Secrets belong in the ignored `.env` file and must not be committed.
 - The local HTTP setup is for development only. Use HTTPS and a real authentication policy before internet exposure.
+- Do not expose Airflow port 8080 or PostgreSQL port 5432 to the public internet. Only Caddy should accept public traffic.
 
 ## Lifecycle
 

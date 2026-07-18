@@ -28,6 +28,11 @@ Docker Desktop must be running. The script uses the existing `airflow` and `dbt`
 - `/healthz` — gateway health response
 
 See [`backend/README.md`](backend/README.md) for architecture, configuration, and production deployment notes.
+See [`DEPLOYMENT.md`](DEPLOYMENT.md) for the GitHub Pages limitation, local workflow, production cutover, and route verification.
+
+## Hosting boundary
+
+GitHub Pages can publish the HTML, CSS, JavaScript, images, and pre-generated dbt documentation, but it cannot run Caddy, Docker, Airflow, PostgreSQL, or pgAdmin. Root-relative dashboard links therefore reach the GitHub Pages origin and return 404 unless the custom domain is moved to the Caddy server or `js/config.js` points them to a separate backend origin.
 
 ## Scope
 

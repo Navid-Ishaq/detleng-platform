@@ -36,6 +36,11 @@
     element.textContent = new Date().getFullYear();
   });
 
+  const backendOrigin = window.DETLENG_CONFIG?.backendOrigin?.replace(/\/$/, '') || '';
+  document.querySelectorAll('[data-service-path]').forEach((link) => {
+    link.href = `${backendOrigin}${link.dataset.servicePath}`;
+  });
+
   const supportTemplate = [
     'Name:',
     '',
